@@ -32,7 +32,6 @@ jobs:
         run: |
           TAG_NAME=${GITHUB_REF#refs/tags/}  # Get the tag name
           gh release create "$TAG_NAME" file.txt --title "Release $TAG_NAME" --notes "This is an automatic release"
-
-      # Optional: Clean up file after upload
+          
       - name: Clean up
         run: rm file.txt
