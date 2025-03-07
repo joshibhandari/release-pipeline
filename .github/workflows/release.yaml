@@ -1,0 +1,36 @@
+name: Create Release and Upload File
+
+on:
+  push:
+    tags:
+      - 'v*'  # This triggers the workflow for any tags starting with "v" (e.g., v1.0.0)
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Create a simple file (you can adjust this to create any file you want)
+      - name: Create a simple file
+        run: |
+          echo "This is a simple file for release." > file.txt
+
+      # Step 3: Set up GitHub CLI (to create release)
+      - name: Set up GitHub CLI
+        uses: cli/cli@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      
+      # Step 4: Create a release
+      - name: Create release
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}  # Get the tag name
+          gh release create "$TAG_NAME" file.txt --title "Release $TAG_NAME" --notes "This is an automatic release"
+
+      # Optional: Clean up file after upload
+      - name: Clean up
+        run: rm file.txt
