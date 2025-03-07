@@ -22,16 +22,20 @@ jobs:
           echo "This is a simple file for release." > file.txt
 
       # Step 3: Set up GitHub CLI (to create release)
-      - name: Set up GitHub CLI
-        uses: cli/cli@v2
+      - name: Create release
+        uses: actions/create-release@v1
         with:
-          github_token: ${{ secrets.TOKEN_GITHUB }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: This is an automatic release.
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
       
       # Step 4: Create a release
       - name: Create release
         run: |
           TAG_NAME=${GITHUB_REF#refs/tags/}  # Get the tag name
           gh release create "$TAG_NAME" file.txt --title "Release $TAG_NAME" --notes "This is an automatic release"
-          
+
       - name: Clean up
         run: rm file.txt
