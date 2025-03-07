@@ -2,14 +2,16 @@ name: Create Release and Upload File
 
 on:
   push:
-    branches:
-      - main
     tags:
       - 'v*'  # This triggers the workflow for any tags starting with "v" (e.g., v1.0.0)
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # Grant permission to write to the repository (for creating releases)
+      issues: read     # Optional: Allow the action to read issues (if needed)
     
     steps:
       # Step 1: Checkout the code
@@ -21,21 +23,27 @@ jobs:
         run: |
           echo "This is a simple file for release." > file.txt
 
-      # Step 3: Set up GitHub CLI (to create release)
+      # Step 3: Create release using actions/create-release
       - name: Create release
         uses: actions/create-release@v1
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: This is an automatic release.
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      # Step 4: Create a release
-      - name: Create release
-        run: |
-          TAG_NAME=${GITHUB_REF#refs/tags/}  # Get the tag name
-          gh release create "$TAG_NAME" file.txt --title "Release $TAG_NAME" --notes "This is an automatic release"
 
+      # Step 4: Upload the file to the release
+      - name: Upload file to release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./file.txt
+          asset_name: file.txt
+          asset_content_type: application/octet-stream
+
+      # Optional: Clean up the file after upload
       - name: Clean up
         run: rm file.txt
