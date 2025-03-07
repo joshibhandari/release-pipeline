@@ -25,7 +25,7 @@ jobs:
       - name: Set up GitHub CLI
         uses: cli/cli@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.TOKEN_GITHUB }}
       
       # Step 4: Create a release
       - name: Create release
