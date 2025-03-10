@@ -16,6 +16,7 @@ jobs:
       - name: Delete old containers
         working-directory: simple-node-app
         run: |
+          docker images
           docker ps -a
 
       # - name: Build Docker Image
