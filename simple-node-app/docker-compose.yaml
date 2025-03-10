@@ -1,0 +1,11 @@
+vaersion: '3.8'
+servers:
+  app:
+    build: .
+    hostname: app
+    ports: 3000
+    volumes:
+      - .:/usr/src/app
+  environment:
+    - NODE_ENV=dev
+  container_name: node-app

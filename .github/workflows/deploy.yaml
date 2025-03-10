@@ -1,0 +1,26 @@
+name: Deployment
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: Set Up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker Image
+        working-directory: simple-node-app
+        run: docker build -t my-app:latest .
+
+      - name: Stop Existing Containers
+        working-directory: simple-node-app
+        run: docker compose down
+
+      - name: Start Containers
+        working-directory: simple-node-app
+        run: docker compose up -d

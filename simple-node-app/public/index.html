@@ -1,0 +1,26 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Node.js App</title>
+  <script>
+    // Fetch data from the backend when the page loads
+    window.onload = async function() {
+      try {
+        const response = await fetch('/api/data');
+        const data = await response.json();
+        document.getElementById('message').textContent = data.message;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  </script>
+</head>
+<body>
+  <h1>Simple Node.js Frontend</h1>
+  <p id="message">Loading...</p>
+</body>
+</html>
+
