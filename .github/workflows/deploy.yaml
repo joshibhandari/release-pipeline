@@ -42,3 +42,8 @@ jobs:
             echo "Failed to start containers"
             exit 1
           fi
+
+      - name: check
+        working-directory: simple-node-app
+        run: |
+          curl http://localhost:3000
