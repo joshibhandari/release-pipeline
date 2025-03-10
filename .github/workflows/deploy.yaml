@@ -19,8 +19,8 @@ jobs:
 
       - name: Stop Existing Containers
         working-directory: simple-node-app
-        run: docker compose down
+        run: docker-compose down
 
       - name: Start Containers
         working-directory: simple-node-app
-        run: docker compose up -d
+        run: docker-compose up -d
