@@ -43,7 +43,18 @@ jobs:
             exit 1
           fi
 
-      - name: check
+      - name: Wait for containers to start
+        run: |
+          echo "Waiting for 10 seconds to allow the containers to start..."
+          sleep 10  # Wait for the containers to fully start before checking
+
+      - name: Check if application is running
         working-directory: simple-node-app
         run: |
-          curl http://localhost:3000
+          echo "Checking if application is accessible..."
+          curl -f http://localhost:3000  # Use the -f flag to fail silently on HTTP errors
+          if [ $? -ne 0 ]; then
+            echo "Application is not accessible"
+            exit 1
+          fi
+          echo "Application is accessible"
