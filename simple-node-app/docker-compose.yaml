@@ -1,5 +1,5 @@
 vaersion: '3.8'
-servers:
+services:
   app:
     build: .
     hostname: node-app
