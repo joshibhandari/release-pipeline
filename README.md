@@ -1,2 +1,2 @@
 # release pipeline
-This is a release pipeline demo
+This is a release pipeline
